@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const { getAllTalkers } = require('./utils/handleTalkers');
 
 const app = express();
 app.use(bodyParser.json());
@@ -16,4 +17,7 @@ app.listen(PORT, () => {
   console.log('Online');
 });
 
-//iniciando projeto
+app.get('/talker', async (_req, res) => {
+  const talkers = await getAllTalkers();
+  return res.status(HTTP_OK_STATUS).json(talkers);
+});
