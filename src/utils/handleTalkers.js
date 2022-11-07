@@ -22,6 +22,7 @@ const generateToken = () => crypto.randomBytes(8).toString('hex');
 
 const addNewTalker = async ({ name, age, talk: { watchedAt, rate } }) => {
   const talkers = await getAllTalkers();
+  console.log('talkers', talkers);
   const id = talkers[talkers.length - 1].id + 1;
   const newTalker = {
     id,

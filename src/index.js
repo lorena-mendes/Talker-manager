@@ -61,6 +61,7 @@ validateWatchedAt,
 validateRate, async (req, res) => {
   const { name, age, talk: { watchedAt, rate } } = req.body;
   const newTalker = await addNewTalker({ name, age, talk: { watchedAt, rate } });
+  console.log(newTalker);
 
-  return res.status(HTTP_CREATED).json({ newTalker });
+  return res.status(HTTP_CREATED).json(newTalker);
 });
