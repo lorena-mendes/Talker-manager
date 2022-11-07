@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { getAllTalkers, getTalkerByID, generateToken } = require('./utils/handleTalkers');
-const validateNewUser = require('./middlewares');
+const { validateNewUser } = require('./middlewares/validateNewUser');
 
 const app = express();
 app.use(bodyParser.json());
