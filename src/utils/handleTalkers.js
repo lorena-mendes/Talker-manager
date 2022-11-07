@@ -14,7 +14,6 @@ const getTalkerByID = async (id) => {
   const response = await readFile(talkersPath, 'utf-8');
   const allTalkers = JSON.parse(response);
   const talkerID = allTalkers.find((talker) => talker.id === id);
-  console.log(talkerID);
   return talkerID;
 };
 
