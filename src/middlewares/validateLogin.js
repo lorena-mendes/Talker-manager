@@ -24,7 +24,7 @@ const passwordValidate = (password, res) => {
   return null;
 };
 
-const validateNewUser = async (req, res, next) => {
+const validateLogin = async (req, res, next) => {
   const { email, password } = req.body;
 
   const validEmail = emailValidate(email, res);
@@ -37,5 +37,5 @@ const validateNewUser = async (req, res, next) => {
 };
 
 module.exports = {
-  validateNewUser,
+  validateLogin,
 };
