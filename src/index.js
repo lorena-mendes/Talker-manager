@@ -1,12 +1,26 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { getAllTalkers, getTalkerByID, generateToken } = require('./utils/handleTalkers');
+const {
+  getAllTalkers,
+  getTalkerByID,
+  generateToken,
+  addNewTalker,
+} = require('./utils/handleTalkers');
 const { validateLogin } = require('./middlewares/validateLogin');
+const {
+  validateToken,
+  validateName,
+  validateAge,
+  validateTalk,
+  validateWatchedAt,
+  validateRate,
+} = require('./middlewares/validateNewTalker');
 
 const app = express();
 app.use(bodyParser.json());
 
 const HTTP_OK_STATUS = 200;
+const HTTP_CREATED = 201;
 const HTTP_NOT_FOUND_STATUS = 404;
 const PORT = '3000';
 
@@ -36,4 +50,17 @@ app.get('/talker/:id', async (req, res) => {
 app.post('/login', validateLogin, async (_req, res) => {
   const token = generateToken();
   return res.status(HTTP_OK_STATUS).json({ token });
+});
+
+app.post('/talker',
+validateToken,
+validateName,
+validateAge,
+validateTalk,
+validateWatchedAt,
+validateRate, async (req, res) => {
+  const { name, age, talk: { watchedAt, rate } } = req.body;
+  const newTalker = await addNewTalker({ name, age, talk: { watchedAt, rate } });
+
+  return res.status(HTTP_CREATED).json({ newTalker });
 });
