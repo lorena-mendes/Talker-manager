@@ -17,9 +17,7 @@ const getTalkerByID = async (id) => {
   return talkerID;
 };
 
-function generateToken() {
-  return crypto.randomBytes(8).toString('hex');
-}
+const generateToken = () => crypto.randomBytes(8).toString('hex');
 
 module.exports = {
   getAllTalkers,
