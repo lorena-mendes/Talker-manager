@@ -1,10 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+
 const {
   getAllTalkers,
   getTalkerByID,
   generateToken,
   addNewTalker,
+  editTalker,
 } = require('./utils/handleTalkers');
 const { validateLogin } = require('./middlewares/validateLogin');
 const {
@@ -61,7 +63,20 @@ validateWatchedAt,
 validateRate, async (req, res) => {
   const { name, age, talk: { watchedAt, rate } } = req.body;
   const newTalker = await addNewTalker({ name, age, talk: { watchedAt, rate } });
-  console.log(newTalker);
 
   return res.status(HTTP_CREATED).json(newTalker);
+});
+
+app.put('/talker/:id',
+validateToken,
+validateName,
+validateAge,
+validateTalk,
+validateWatchedAt,
+validateRate,
+editTalker, async (req, res) => {
+  const { id } = req.params;
+  const { name, age, talk } = req.body;
+  const editID = await editTalker(id, name, age, talk);
+  return res.status(HTTP_OK_STATUS).json(editID);
 });

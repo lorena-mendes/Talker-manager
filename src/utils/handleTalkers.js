@@ -13,6 +13,7 @@ const getAllTalkers = async () => {
 
 const getTalkerByID = async (id) => {
   const response = await readFile(talkersPath, 'utf-8');
+  console.log(response);
   const allTalkers = JSON.parse(response);
   const talkerID = allTalkers.find((talker) => talker.id === id);
   return talkerID;
@@ -38,9 +39,20 @@ const addNewTalker = async ({ name, age, talk: { watchedAt, rate } }) => {
   return newTalker;
 };
 
+const editTalker = async (id, name, age, talk) => {
+  const talkersBruto = await readFile(talkersPath, 'utf-8');
+  const talkers = JSON.parse(talkersBruto);
+  const index = talkers.findIndex((talker) => talker.id === Number(id));
+  talkers[index] = { id: +id, name, age, talk: { watchedAt: talk.watchedAt, rate: talk.rate } };
+  const upDateTalkers = JSON.stringify(talkers, null, 2);
+  await fs.writeFile(talkersPath, upDateTalkers);
+  return talkers[index];
+};
+
 module.exports = {
   getAllTalkers,
   getTalkerByID,
   generateToken,
   addNewTalker,
+  editTalker,
 };
