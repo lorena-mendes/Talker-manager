@@ -39,10 +39,12 @@ const addNewTalker = async ({ name, age, talk: { watchedAt, rate } }) => {
 
 const editTalker = async (id, name, age, { watchedAt, rate }) => {
   const allTalkers = await readFile(talkersPath, 'utf-8');
-  const index = allTalkers.findIndex((talker) => talker.id === Number(id));
-  allTalkers[index] = { id: +id, name, age, talk: { watchedAt, rate } };
-  const upDateTalkers = await fs.writeFile(talkersPath);
-  return upDateTalkers[index];
+  const talkers = JSON.parse(allTalkers);
+  const index = talkers.findIndex((talker) => talker.id === Number(id));
+  talkers[index] = { id: +id, name, age, talk: { watchedAt, rate } };
+  const upDateTalkers = JSON.stringify(talkers, null, 2);
+  await fs.writeFile(talkersPath, upDateTalkers);
+  return talkers[index];
 };
 
 // const deleteTalker = async (id) => {
