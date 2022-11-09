@@ -13,7 +13,6 @@ const getAllTalkers = async () => {
 
 const getTalkerByID = async (id) => {
   const response = await readFile(talkersPath, 'utf-8');
-  console.log(response);
   const allTalkers = JSON.parse(response);
   const talkerID = allTalkers.find((talker) => talker.id === id);
   return talkerID;
@@ -23,7 +22,6 @@ const generateToken = () => crypto.randomBytes(8).toString('hex');
 
 const addNewTalker = async ({ name, age, talk: { watchedAt, rate } }) => {
   const talkers = await getAllTalkers();
-  console.log('talkers', talkers);
   const id = talkers[talkers.length - 1].id + 1;
   const newTalker = {
     id,
@@ -39,15 +37,17 @@ const addNewTalker = async ({ name, age, talk: { watchedAt, rate } }) => {
   return newTalker;
 };
 
-const editTalker = async (id, name, age, talk) => {
-  const talkersBruto = await readFile(talkersPath, 'utf-8');
-  const talkers = JSON.parse(talkersBruto);
-  const index = talkers.findIndex((talker) => talker.id === Number(id));
-  talkers[index] = { id: +id, name, age, talk: { watchedAt: talk.watchedAt, rate: talk.rate } };
-  const upDateTalkers = JSON.stringify(talkers, null, 2);
-  await fs.writeFile(talkersPath, upDateTalkers);
-  return talkers[index];
+const editTalker = async (id, name, age, { watchedAt, rate }) => {
+  const allTalkers = await readFile(talkersPath, 'utf-8');
+  const index = allTalkers.findIndex((talker) => talker.id === Number(id));
+  allTalkers[index] = { id: +id, name, age, talk: { watchedAt, rate } };
+  const upDateTalkers = await fs.writeFile(talkersPath);
+  return upDateTalkers[index];
 };
+
+// const deleteTalker = async (id) => {
+//   const 
+// }
 
 module.exports = {
   getAllTalkers,
