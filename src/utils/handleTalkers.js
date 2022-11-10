@@ -59,8 +59,8 @@ const deleteTalker = async (id) => {
 const searchTerm = async (term) => {
   const allTalkers = await readFile(talkersPath, 'utf-8');
   const talkers = JSON.parse(allTalkers);
-  const filteredTalkers = talkers.filter((element) => element.name.includes(term));
-  await fs.writeFile(talkersPath, JSON.stringify(filteredTalkers, null, 2));
+  const filteredTalkers = talkers
+  .filter((element) => element.name.toLowerCase().includes(term.toLowerCase()));
   return filteredTalkers;
 };
 
