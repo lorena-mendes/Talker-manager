@@ -8,6 +8,7 @@ const {
   addNewTalker,
   editTalker,
   deleteTalker,
+  searchTerm,
 } = require('./utils/handleTalkers');
 const { validateLogin } = require('./middlewares/validateLogin');
 const {
@@ -40,6 +41,12 @@ app.listen(PORT, () => {
 app.get('/talker', async (_req, res) => {
   const talkers = await getAllTalkers();
   return res.status(HTTP_OK_STATUS).json(talkers);
+});
+
+app.get('/talker/search', validateToken, async (req, res) => {
+  const { q } = req.query;
+  const result = await searchTerm(q);  
+  return res.status(HTTP_OK_STATUS).json(result);
 });
 
 app.get('/talker/:id', async (req, res) => {
