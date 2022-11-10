@@ -47,9 +47,14 @@ const editTalker = async (id, name, age, { watchedAt, rate }) => {
   return talkers[index];
 };
 
-// const deleteTalker = async (id) => {
-//   const 
-// }
+const deleteTalker = async (id) => {
+  const allTalkers = await readFile(talkersPath, 'utf-8');
+  const talkers = JSON.parse(allTalkers);
+  const filteredTalkers = talkers.filter((talker) => talker.id !== Number(id));
+  const upDateTalkers = JSON.stringify(filteredTalkers, null, 2);
+  await fs.writeFile(talkersPath, upDateTalkers);
+  return upDateTalkers;
+};
 
 module.exports = {
   getAllTalkers,
@@ -57,4 +62,5 @@ module.exports = {
   generateToken,
   addNewTalker,
   editTalker,
+  deleteTalker,
 };

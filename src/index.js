@@ -7,6 +7,7 @@ const {
   generateToken,
   addNewTalker,
   editTalker,
+  deleteTalker,
 } = require('./utils/handleTalkers');
 const { validateLogin } = require('./middlewares/validateLogin');
 const {
@@ -24,6 +25,7 @@ app.use(bodyParser.json());
 const HTTP_OK_STATUS = 200;
 const HTTP_CREATED = 201;
 const HTTP_NOT_FOUND_STATUS = 404;
+const HTTP_NO_CONTENT = 204;
 const PORT = '3000';
 
 // não remova esse endpoint, e para o avaliador funcionar
@@ -79,4 +81,10 @@ editTalker, async (req, res) => {
   const { name, age, talk } = req.body;
   const editID = await editTalker(id, name, age, talk);
   return res.status(HTTP_OK_STATUS).json(editID);
+});
+
+app.delete('/talker/:id', validateToken, async (req, res) => {
+  const { id } = req.params;
+  await deleteTalker(id);
+  res.status(HTTP_NO_CONTENT).json();
 });
